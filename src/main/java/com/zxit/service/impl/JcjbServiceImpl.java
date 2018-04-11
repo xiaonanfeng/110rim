@@ -53,7 +53,9 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
     @Override
     public List<CountDto> findJcjbCountByCol(Jcjb jcjb, String col) {
         String hql = this.getQueryJPQL(jcjb);
-        hql = "select " + col + " as name,count(" + col + ") as countNum  " + hql + "  group by " + col + " ";
+        hql = "select " + col + " as name,count(" + col + ") as countNum  " + hql +
+                " and " + col + " is not null " +
+                " group by " + col + " ";
         List<CountDto> list = this.findByHQL(hql).list();
         return list;
     }
@@ -83,7 +85,8 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
                 String hqlResult = "select " + col + " as name,count(" + col + ") as countNum"
                         + hql + //from Jcjb where …… 1=1
                         " and to_char(trunc(bjsj),'yyyy-MM-dd') = '" + cal + "' " +
-                        " and to_char(bjsj,'HH24') = " + l_scope + " group by " + col + " ";
+                        " and to_char(bjsj,'HH24') = " + l_scope +
+                        " and " + col + " is not null group by " + col + " ";
                 List<CountDto> countDtos = this.findByHQL(hqlResult).list();
                 dateAndColDto.setCountDtoList(countDtos);
                 dateAndColDtos.add(dateAndColDto);
@@ -111,7 +114,8 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
             String cal = simpleDateFormat.format(date);
             String hqlResult = "select " + col + " as name,count(" + col + ") as countNum "
                     + hql + //from Jcjb where …… 1=1
-                    " and to_char(trunc(bjsj),'yyyy-MM-dd') = '" + cal + "' group by " + col + " ";
+                    " and to_char(trunc(bjsj),'yyyy-MM-dd') = '" + cal + "' " +
+                    " and " + col + " is not null group by " + col + " ";
             List<CountDto> countDtos = this.findByHQL(hqlResult).list();
             dateAndColDto.setCountDtoList(countDtos);
             dateAndColDtos.add(dateAndColDto);
