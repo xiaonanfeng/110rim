@@ -11,5 +11,5 @@ logging:
 
 
 local-config:
-  serverIp: http://192.168.1.107:8761/
+  serverIp: http://39.104.113.229:8761/
   httpFilePath: /java/resources/

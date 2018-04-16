@@ -45,6 +45,13 @@ public interface JcjbService extends ABaseService {
     Jcjb findByJjh(String jjh);
 
     /**
+     * 根据jjh返回word的http路径，提供给前端下载
+     * @param jjh
+     * @return
+     */
+    String findJcjbByJjh2Word(String jjh);
+
+    /**
      * 二维统计
      * @param jcjb
      * @param col
@@ -68,4 +75,5 @@ public interface JcjbService extends ABaseService {
      * @return
      */
     List<DateAndColDto> findJcjbCountsByDate(Jcjb jcjb, String col);
+
 }

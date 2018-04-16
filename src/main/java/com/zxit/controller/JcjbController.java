@@ -1,5 +1,6 @@
 package com.zxit.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.zxit.config.YmlConfig;
 import com.zxit.model.CallinfoBb;
 import com.zxit.model.Jcjb;
@@ -35,6 +36,11 @@ public class JcjbController {
     private static final String sourceRootPath = "Z:/";
     private static final String tarRootPath = "/java/resources/";
 
+
+    @PostMapping("/testMw")
+    public void testMw(@RequestBody JSONArray jsonArray) {
+        System.out.println(jsonArray);
+    }
 
     /**
      * 带分页的查询接处警信息
@@ -75,6 +81,18 @@ public class JcjbController {
     public Jcjb findJcjbByJjh(@PathVariable String jjh) {
         return jcjbService.findByJjh(jjh);
     }
+
+    /**
+     * 查询接处警信息对象
+     *
+     * @param jjh
+     * @return
+     */
+    @GetMapping("/findJcjbByJjh2Word/{jjh}")
+    public String findJcjbByJjh2Word(@PathVariable String jjh) {
+        return jcjbService.findJcjbByJjh2Word(jjh);
+    }
+
 
     /**
      * 通过接警流水号查询录音http路径集合

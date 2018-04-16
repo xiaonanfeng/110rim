@@ -1,5 +1,7 @@
 package com.zxit.service.impl;
 
+import com.xnf.utils.DateUtil;
+import com.zxit.config.YmlConfig;
 import com.zxit.model.dto.DateAndColDto;
 import com.zxit.share.Constants;
 import com.zxit.model.CallinfoBb;
@@ -9,6 +11,7 @@ import com.zxit.model.dto.CountDto;
 import com.zxit.model.dto.TimeScopeAndDateDto;
 import com.zxit.dao.JcjbRepository;
 import com.zxit.service.JcjbService;
+import com.zxit.share.Poi2word;
 import com.zxit.share.Share;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,16 +24,16 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.persistence.criteria.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
 
     @Resource
     private JcjbRepository jcjbRepository;
+
+    @Resource
+    private YmlConfig ymlConfig;
 
     @Override
     public Page<Jcjb> findJcjbs(Pageable pageable, Jcjb jcjb) {
@@ -48,6 +51,56 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
     public Jcjb findByJjh(String jjh) {
         Jcjb jcjb = jcjbRepository.findByJjh(jjh);
         return jcjb;
+    }
+
+    @Override
+    public String findJcjbByJjh2Word(String jjh) {
+        Jcjb jcjb = jcjbRepository.findByJjh(jjh);
+        Set<Cjb> cjbs = jcjb.getCjbs();
+
+        Map<String, String> datas = new HashMap<>();
+        datas.put("jjh", jjh);
+        datas.put("bjsj", DateUtil.date2Str(jcjb.getBjsj(), DateUtil.FORMAT_YMDHMS));
+        datas.put("bjrxm", jcjb.getBjrxm() == null ? "" : jcjb.getBjrxm());
+        datas.put("bjrxb", jcjb.getBjrxb() == null ? "" : jcjb.getBjrxb());
+        datas.put("bjdh", jcjb.getBjdh() == null ? "" : jcjb.getBjdh());
+        datas.put("fadz", jcjb.getFadz() == null ? "" : jcjb.getFadz());
+        datas.put("ajlx", jcjb.getAjlx() == null ? "" : jcjb.getAjlx());
+        datas.put("ajxz", jcjb.getAjxz() == null ? "" : jcjb.getAjxz());
+        datas.put("xzfl", jcjb.getXzfl() == null ? "" : jcjb.getXzfl());
+        datas.put("xzxl", jcjb.getXzxl() == null ? "" : jcjb.getXzxl());
+        datas.put("jjzy", jcjb.getJjzy() == null ? "" : jcjb.getJjzy());
+        String cjjg = "";
+        String hgr = "";
+        Date hgsj = null;
+        int i = 0;
+        for (Cjb cjb : cjbs) {
+            String cjdw = cjb.getCjdw() == null ? "" : cjb.getCjdw();
+            String slr = cjb.getSlr() == null ? "" : cjb.getSlr();
+            datas.put("cjdw" + i, cjdw);
+            datas.put("slr" + i, slr);
+            if (cjb.getGxbq().equals("1")) {
+                hgr = cjb.getHgr() == null ? "" : cjb.getHgr();
+                hgsj = cjb.getHgsj();
+                cjjg = cjdw + "：" + cjb.getCjjg() == null ? "" : cjb.getCjjg();
+            }
+            i++;
+        }
+        for (int j = 3; j >= i; j--) {
+            datas.put("cjdw" + j, "");
+            datas.put("slr" + j, "");
+        }
+        datas.put("cjjg", cjjg);
+        datas.put("hgr", hgr);
+        datas.put("hgsj", DateUtil.date2Str(hgsj, DateUtil.FORMAT_YMDHMS) == null ? "" : DateUtil.date2Str(hgsj, DateUtil.FORMAT_YMDHMS));
+        try {
+            String resources = ymlConfig.getHttpFilePath();//资源文件路径
+            String httpFile = ymlConfig.getServerIp() + Poi2word.buildWord(resources, datas);
+            return httpFile;
+        } catch (Exception e) {
+            System.out.println();
+        }
+        return null;
     }
 
     @Override

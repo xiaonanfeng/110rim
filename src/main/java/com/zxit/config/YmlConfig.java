@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class YmlConfig {
 
     private String serverIp;
+    private String httpFilePath;
 
     public YmlConfig() {
     }
@@ -22,6 +23,14 @@ public class YmlConfig {
 
     public void setServerIp(String serverIp) {
         this.serverIp = serverIp;
+    }
+
+    public String getHttpFilePath() {
+        return httpFilePath;
+    }
+
+    public void setHttpFilePath(String httpFilePath) {
+        this.httpFilePath = httpFilePath;
     }
 
     @Override
