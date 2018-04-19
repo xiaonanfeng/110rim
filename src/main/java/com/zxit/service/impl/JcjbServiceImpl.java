@@ -98,7 +98,7 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
             String httpFile = ymlConfig.getServerIp() + Poi2word.buildWord(resources, datas);
             return httpFile;
         } catch (Exception e) {
-            System.out.println();
+            System.out.println(e.toString());
         }
         return null;
     }
@@ -141,8 +141,10 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
                         " and to_char(bjsj,'HH24') = " + l_scope +
                         " and " + col + " is not null group by " + col + " ";
                 List<CountDto> countDtos = this.findByHQL(hqlResult).list();
-                dateAndColDto.setCountDtoList(countDtos);
-                dateAndColDtos.add(dateAndColDto);
+                if (!countDtos.isEmpty()) {
+                    dateAndColDto.setCountDtoList(countDtos);
+                    dateAndColDtos.add(dateAndColDto);
+                }
             }
             timeScopeAndDateDto.setDateAndColDtoList(dateAndColDtos);
             list.add(timeScopeAndDateDto);
@@ -170,8 +172,10 @@ public class JcjbServiceImpl extends ABaseServiceImpl implements JcjbService {
                     " and to_char(trunc(bjsj),'yyyy-MM-dd') = '" + cal + "' " +
                     " and " + col + " is not null group by " + col + " ";
             List<CountDto> countDtos = this.findByHQL(hqlResult).list();
-            dateAndColDto.setCountDtoList(countDtos);
-            dateAndColDtos.add(dateAndColDto);
+            if (!countDtos.isEmpty()) {
+                dateAndColDto.setCountDtoList(countDtos);
+                dateAndColDtos.add(dateAndColDto);
+            }
         }
         return dateAndColDtos;
     }

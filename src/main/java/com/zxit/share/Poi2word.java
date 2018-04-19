@@ -29,7 +29,7 @@ public class Poi2word {
         Range bodyRange = document.getRange();
         // 替换内容
         for (Map.Entry<String, String> entry : contentMap.entrySet()) {
-            bodyRange.replaceText("${" + entry.getKey() + "}", entry.getValue());
+            bodyRange.replaceText("${" + entry.getKey() + "}", entry.getValue()==null?"":entry.getValue());
         }
         //导出到文件
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
