@@ -52,7 +52,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             "classpath:/resources/",
             "classpath:/static/",
             "classpath:/public/",
-            "file:/java/resources/"
+            "file:/java/resources/",
+            "file:/d:/java/resources/"
     };
 
     @Override

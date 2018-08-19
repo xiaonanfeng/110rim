@@ -1,5 +1,5 @@
 server:
-  port: 8761
+  port: 8766
 spring:
   profiles:
     active: db
@@ -11,5 +11,5 @@ logging:
 
 
 local-config:
-  serverIp: http://39.104.113.229:8761/
+  serverIp: http://47.94.128.122:8766/
   httpFilePath: /java/resources/
